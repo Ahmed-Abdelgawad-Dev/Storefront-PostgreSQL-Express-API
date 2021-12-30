@@ -4,7 +4,8 @@ import morgan from 'morgan';
 import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv'
-
+import routes from './routes/API/users'
+import errorMiddleware from './middlewares/errorMiddleware'
 
 const app: express.Application = express()
 
@@ -25,6 +26,9 @@ app.use(morgan('dev'))
 app.get('/', function (_req: Request, res: Response) {
     res.send('Main API root Endpoint!!!')
 })
+
+app.use('/api', routes)
+app.use(errorMiddleware)
 
 app.listen(3000, function () {
     console.log(`Server is running on port: ${address}`)
