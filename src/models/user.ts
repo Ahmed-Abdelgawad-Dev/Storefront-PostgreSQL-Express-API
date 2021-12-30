@@ -60,10 +60,10 @@ class UserModel {
     async edit(usr: User): Promise<User> {
         try {
             const connection = await client.connect()
-            const sql = 'update users SET email=$1, user_name=$2, password=$3, first_name=$4, last_name=$5'
+            const sql = 'update users SET email=$1, user_name=$2, password=$3, first_name=$4, last_name=$5 where id=$6 returning *'
             const result = await connection.query(sql, [
                 usr.email, usr.user_name, hashing(usr.password as string),
-                usr.first_name, usr.last_name
+                usr.first_name, usr.last_name, usr.id
             ])
             connection.release()
             return this.formatUser(result.rows[0])
@@ -110,7 +110,6 @@ class UserModel {
                 }
             }
             connection.release()
-            return this.formatUser(result.rows[0]);
             return null
         } catch (error) {
             throw new Error(`Unable to authenticate user, ${error}`)

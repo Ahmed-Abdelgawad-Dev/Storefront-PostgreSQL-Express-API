@@ -25,6 +25,9 @@ const validatingToken = (req: Request, res: Response, next: NextFunction) => {
             const token = authorizationHeader.split(' ')[1]
             if (bearer && token == 'bearer') {
                 const decoded = jwt.verify(token, TOKEN_SECRET as unknown as string)
+                if (decoded) {
+                    next()
+                } else { authError(next) }
             } else { authError(next) }
         } else { authError(next) }
     } catch (error) {
