@@ -4,7 +4,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv'
-import routes from './routes/API/users'
+import routes from './routes'
 import errorMiddleware from './middlewares/errorMiddleware'
 
 const app: express.Application = express()

@@ -25,4 +25,16 @@ routes.post('/', validatingToken,
     }
 )
 
+routes.get('/', validatingToken, async (_req: Request, res: Response, next: NextFunction) => {
+    try {
+        const users = await userModel.index()
+        res.json({
+            status: 'success', data: { users },
+            message: 'Successfully invoked users'
+        })
+    } catch (error) {
+        next(error)
+    }
+})
+
 export default routes
