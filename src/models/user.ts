@@ -14,7 +14,7 @@ export type User = {
 }
 
 class UserModel {
-    private formatUser(user: {
+    formatUser(user: {
         id?: number | undefined;
         email: string;
         user_name: string;
