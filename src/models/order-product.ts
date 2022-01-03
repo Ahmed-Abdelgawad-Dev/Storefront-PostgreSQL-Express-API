@@ -76,7 +76,20 @@ class OrderProductModel {
             throw new Error('The product can not be deleted')
         }
     }
+
+    async show(order_id: number, product_id: number): Promise<ProductsOrder> {
+        try {
+            const connection = await client.connect()
+            const sql = 'SELECT op.order_id::INTEGER AS id, op.order_id::INTEGER AS "orderId", op.product_id::INTEGER AS "productId", op.quantity, p.name, p.description, p.category, p.price::INTEGER FROM products-order AS op JOIN products AS p ON p.id=op.product_id WHERE order_id=$1 AND product_id=$2'
+            const result = await connection.query(sql, [product_id, order_id])
+            connection.release()
+            return this.formatOrderProduct(result.rows[0])
+        } catch (e) {
+            throw new Error('The product can not be deleted')
+        }
+    }
 }
+
 
 
 export default OrderProductModel

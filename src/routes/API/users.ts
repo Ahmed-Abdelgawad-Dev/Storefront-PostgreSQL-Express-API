@@ -11,7 +11,7 @@ const { TOKEN_SECRET } = process.env
 const routes = Router()
 const userModel = new UserModel()
 
-routes.post('/create', validatingToken,
+routes.post('/', validatingToken,
     async (req: Request, res: Response, next: NextFunction) => {
         try {
             const user = await userModel.create(req.body)
