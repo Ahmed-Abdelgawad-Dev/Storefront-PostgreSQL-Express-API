@@ -2,21 +2,15 @@ import client from '../database'
 import bcrypt from 'bcrypt'
 import hashing from '../utils/hashing'
 import dotenv from 'dotenv'
+import {User} from "../types";
 dotenv.config()
 
-export type User = {
-    id?: number;
-    email: string;
-    user_name: string;
-    password?: string;
-    first_name?: string;
-    last_name?: string;
-}
+
 
 class UserModel {
-    formatUser(user: {
+    cleaned_user(user: {
         id?: number | undefined;
-        email: string;
+        email?: string;
         user_name: string;
         password?: string;
         first_name?: string;
@@ -39,7 +33,7 @@ class UserModel {
                 usr.first_name, usr.last_name
             ])
             connection.release()
-            return this.formatUser(result.rows[0])
+            return this.cleaned_user(result.rows[0])
         } catch (error) {
             throw new Error(`Sorry can't create user: ${usr.user_name}`)
         }
@@ -51,7 +45,7 @@ class UserModel {
             const sql = 'select * from users';
             const result = await connection.query(sql)
             connection.release()
-            return result.rows.map((u) => this.formatUser(u))
+            return result.rows.map((u) => this.cleaned_user(u))
         } catch (error) {
             throw new Error(`Sorry we cant get users`)
         }
@@ -66,7 +60,7 @@ class UserModel {
                 usr.first_name, usr.last_name, usr.id
             ])
             connection.release()
-            return this.formatUser(result.rows[0])
+            return this.cleaned_user(result.rows[0])
         } catch (error) {
             throw new Error(`Can not update user.`)
         }
@@ -78,35 +72,36 @@ class UserModel {
             const sql = 'delete from users where id=($1) returning *'
             const result = await connection.query(sql, [id])
             connection.release()
-            return this.formatUser(result.rows[0])
+            return this.cleaned_user(result.rows[0])
         } catch (error) {
             throw new Error(`Could not delete user ${id}`)
         }
     }
-
+    // Works
     async show(id: Number): Promise<User> {
         try {
             const connection = await client.connect()
             const sql = 'select * from users where id=($1)'
             const result = await connection.query(sql, [id])
             connection.release()
-            return this.formatUser(result.rows[0]);
+            return this.cleaned_user(result.rows[0]);
         } catch (error) {
             throw new Error(`User ${id} does not exist`)
         }
     }
-    async authenticate(nameOfUser: string, password: string): Promise<User | null> {
+    // Works
+    async authenticate(user_name: string, password: string): Promise<User | null> {
         try {
             const connection = await client.connect()
-            const sql = 'select password from users where user_name=($1)'
-            const result = await connection.query(sql, [nameOfUser])
+            const sql = 'select password from users where user_name=$1'
+            const result = await connection.query(sql, [user_name])
             if (result.rows.length) {
                 const { password: hashedPw } = result.rows[0];
                 const validPassword = bcrypt.compareSync(`${password}${process.env.BCRYPT_PASSWORD}`, hashedPw)
                 if (validPassword) {
                     const q = 'select * from users where user_name=($1)'
-                    const userDetails = await connection.query(q, [nameOfUser])
-                    return this.formatUser(userDetails.rows[0]);
+                    const userDetails = await connection.query(q, [user_name])
+                    return this.cleaned_user(userDetails.rows[0]);
                 }
             }
             connection.release()

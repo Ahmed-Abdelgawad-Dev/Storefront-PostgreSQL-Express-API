@@ -3,7 +3,9 @@ import { Request, Response, NextFunction } from 'express'
 
 interface Error {
     status?: number;
+    name?: string;
     message?: string;
+    stack?: string;
 }
 
 const errorMiddleware = (error: Error, _req: Request, response: Response, next: NextFunction) => {

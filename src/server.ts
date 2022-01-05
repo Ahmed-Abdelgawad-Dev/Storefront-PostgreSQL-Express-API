@@ -14,8 +14,13 @@ dotenv.config()
 const PORT = process.env.PORT || 3000
 const address: string = `0.0.0.0:${PORT}`
 
+app.use(express.json());
+
+// app.use(express.urlencoded());
+
 // Middle wares
-app.use(bodyParser.json())
+// app.use(bodyParser.json())
+
 // Cors => allowed whitelist | any | specific opt
 app.use(cors())
 //Security

@@ -3,7 +3,7 @@ import userRoutes from './API/users'
 import productsRoutes from './API/products'
 import ordersRoutes from './API/orders'
 import orderProductsRoutes from './API/order-products'
-import validatingToken from "../middlewares/auth";
+import validatingToken from "../middlewares/authMiddleware";
 
 
 const routes = Router()
