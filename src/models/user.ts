@@ -25,13 +25,12 @@ export class UserModel {
         }
     }
 
-
     async create(usr: User): Promise<User> {
         try{
             const connection = await  client.connect()
             const sql =
-                'insert into users (user_name, first_name, last_name, password) values ($1, $2, $3, $4) returning *';
-            const encryptedPassword = bcrypt.hash(usr.password + PEPPER, parseInt(SALT_ROUNDS as unknown as string))
+                'insert into users (user_name, first_name, last_name, password) values ($1, $2, $3, $4) returning *;';
+            const encryptedPassword = bcrypt.hashSync(usr.password + PEPPER, parseInt(SALT_ROUNDS as unknown as string))
             const result = await  connection.query(sql, [
                 usr.user_name, usr.first_name, usr.last_name, encryptedPassword
             ])

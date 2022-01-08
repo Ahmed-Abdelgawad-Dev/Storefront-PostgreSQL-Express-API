@@ -1,4 +1,4 @@
-import express, {Request, Response} from "express";
+import express, {NextFunction, Request, Response} from "express";
 import {UserModel} from "../models/user";
 import {User} from "../types";
 import {createToken, verifyToken} from "../utils/jwtAuth";
@@ -15,17 +15,19 @@ const index = async (_req:Request, res: Response) => {
     }
 }
 
-const create = async (req:Request, res: Response) => {
+const create = async (req:Request, res: Response, next: NextFunction) => {
         const usrDetails: User = {
             user_name: req.body.user_name, first_name: req.body.first_name,
             last_name: req.body.last_name, password: req.body.password
         }
         try{
-            const usr = await userModel.create(usrDetails)
+            const usr= await userModel.create(usrDetails)
             res.json(createToken(usr.user_name))
+            next()
         }catch (e) {
             // @ts-ignore
             res.status(500).send(`${e.message}`)
+
         }
 }
 
@@ -57,15 +59,11 @@ export const usersRouter = (app: express.Application): void => {
     app.get('/users', index)
     app.get('/users/:id', show)
     app.post('/users/create', create)
-    app.get('/authenticate',  authenticate)
+    app.get('/users/auth',  authenticate)
 
-    // app.get('/users', authMiddleware, index)
-    // app.get('/users/:id', authMiddleware, show)
-    // app.post('/users/create', authMiddleware, create)
-    // app.get('/authenticate', authMiddleware, authenticate)
 
     // app.get('/users', verifyToken, index)
     // app.get('/users/:id', verifyToken, show)
     // app.post('/users/create', verifyToken, create)
-    // app.get('/authenticate', verifyToken, authenticate)
+    // app.get('/users/auth', verifyToken, authenticate)
 }

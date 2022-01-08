@@ -4,6 +4,8 @@ import helmet from 'helmet';
 import dotenv from 'dotenv'
 import { usersRouter } from './controllers/userController';
 import bodyParser from 'body-parser'
+import errorMiddleware from "./utils/errorMiddleware";
+
 
 const app: express.Application = express()
 
@@ -13,12 +15,13 @@ const PORT = process.env.PORT || 3000
 // Cors => allowed whitelist | any | specific opt
 app.use(cors())
 
-// app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json())
 app.use(bodyParser.json())
 
 //Security
 app.use(helmet())
+
+app.use(errorMiddleware)
 
 app.get('/', function (_req: Request, res: Response) {
     res.send(`Main API root Endpoint.`)
