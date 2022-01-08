@@ -59,11 +59,11 @@ export const usersRouter = (app: express.Application): void => {
     app.get('/users', index)
     app.get('/users/:id', show)
     app.post('/users/create', create)
-    app.get('/users/auth',  authenticate)
+    app.post('/users/auth',  authenticate)
 
 
     // app.get('/users', verifyToken, index)
     // app.get('/users/:id', verifyToken, show)
     // app.post('/users/create', verifyToken, create)
-    // app.get('/users/auth', verifyToken, authenticate)
+    app.post('/users/auth', verifyToken, authenticate)
 }

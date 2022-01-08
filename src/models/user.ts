@@ -60,19 +60,38 @@ export class UserModel {
     async authenticate(user_name: string, pw: string): Promise<null | User> {
         try{
             const connection = await client.connect()
-            const sql = 'select * from users where user_name=($1);';
+            const sql = 'select password from users where user_name=($1);';
             const result = await connection.query(sql, [user_name]);
-            let authentication: null | User = null
-            if(result.rows.length) {
-                const {id, user_name, first_name, last_name, password} = result.rows[0]
-                const usr: User = formatUser(id, user_name, first_name, last_name, password)
-                if(bcrypt.compareSync(pw + PEPPER, usr.password)) {authentication = usr}
+            if (result.rows.length) {
+                const usr = result.rows[0]
+                if (bcrypt.compareSync(pw + PEPPER, usr.password)) {
+                    return usr
+                }
             }
-            return authentication
-        } catch (e) {
-            throw new Error(`The user: ${user_name} is not authenticated yet, ${e}`)
+            return null
+        }catch (e) {
+            // @ts-ignore
+            throw new Error(`The user: ${user_name} is not authenticated yet, ${e.message}`)
         }
 
+
+        // try{
+        //     const connection = await client.connect()
+        //     const sql = 'select password from users where user_name=($1);';
+        //     const result = await connection.query(sql, [user_name]);
+        //
+        //
+        //     let authentication: null | User = null
+        //     if(result.rows.length) {
+        //         const {id, user_name, first_name, last_name, password} = result.rows[0]
+        //         const usr: User = formatUser(id, user_name, first_name, last_name, password)
+        //         if(bcrypt.compareSync(pw + PEPPER, usr.password)) {authentication = usr}
+        //     }
+        //     return authentication
+        // }
+        // catch (e) {
+        //     throw new Error(`The user: ${user_name} is not authenticated yet, ${e}`)
+        // }
     }
 }
 
