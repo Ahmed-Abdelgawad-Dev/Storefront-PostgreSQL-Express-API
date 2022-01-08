@@ -1,87 +1,79 @@
-import client from '../database'
+import client from "../database";
 import bcrypt from 'bcrypt'
-import hashing from '../utils/hashing'
 import dotenv from 'dotenv'
-import { User } from "../types";
+import {User} from "../types";
+import {formatUser} from "../utils/formats";
+
+
+
 dotenv.config()
 
+const {SALT_ROUNDS, PEPPER} = process.env
+export class UserModel {
 
-
-class UserModel {
-    cleaned_user(user: {
-        id?: number | undefined;
-        user_name?: string;
-        first_name?: string;
-        last_name?: string;
-        password?: string;
-    }): User {
-        return {
-            id: user.id,
-            user_name: user.user_name,
-            first_name: user.first_name,
-            last_name: user.last_name,
-        }
-    }
-    // Works
     async index(): Promise<User[]> {
-        try {
+        try{
             const connection = await client.connect()
-            const sql = 'select * from users';
+            const sql = 'select * from users;'
             const result = await connection.query(sql)
             connection.release()
-            return result.rows.map((u) => this.cleaned_user(u))
-        } catch (error) {
-            throw new Error(`Sorry we cant get users`)
+            return result.rows.map((usr) => {
+                return formatUser(usr.id, usr.user_name, usr.first_name, usr.last_name, usr.password)
+            })
+        }catch (e) {
+            throw new Error(`${e}`)
         }
     }
 
-    // Works
-    async show(id: Number): Promise<User> {
-        try {
+
+    async create(usr: User): Promise<User> {
+        try{
+            const connection = await  client.connect()
+            const sql =
+                'insert into users (user_name, first_name, last_name, password) values ($1, $2, $3, $4) returning *';
+            const encryptedPassword = bcrypt.hash(usr.password + PEPPER, parseInt(SALT_ROUNDS as unknown as string))
+            const result = await  connection.query(sql, [
+                usr.user_name, usr.first_name, usr.last_name, encryptedPassword
+            ])
+            const {id, user_name, first_name, last_name, password} = result.rows[0]
+            connection.release()
+            return formatUser(id, user_name, first_name, last_name, password)
+        }catch (e)  {
+            // @ts-ignore
+            throw new Error(`${usr.user_name} can not be created: ${e.message}`)
+        }
+    }
+
+    async show(usr_id:  number): Promise<User> {
+        try{
             const connection = await client.connect()
             const sql = 'select * from users where id=($1)'
-            const result = await connection.query(sql, [id])
+            const result = await connection.query(sql,[usr_id])
+            const {id, user_name, first_name, last_name, password} = result.rows[0]
             connection.release()
-            return this.cleaned_user(result.rows[0]);
-        } catch (error) {
-            throw new Error(`User ${id} does not exist`)
-        }
-    }
-    // Works
-    async create(usr: User): Promise<User> {
-        try {
-            const connection = await client.connect()
-            const sql = 'insert into users (user_name, first_name, last_name, password) values ($1,$2,$3,$4) returning user_name, first_name, last_name, password';
-            const result = await connection.query(sql, [usr.user_name, usr.first_name, usr.last_name, hashing(usr.password as string)])
-            connection.release()
-            return this.cleaned_user(result.rows[0])
-        } catch (error) {
-            throw new Error(`Sorry can't create user: ${usr.user_name}`)
+            return formatUser(id, user_name, first_name, last_name, password)
+        }catch (e) {
+            console.log(e)
+            throw new Error(`${e}`)
         }
     }
 
-    // Does not work
-    async authenticate(usr: string, password: string): Promise<User | null> {
-        try {
-            const connection = await client.connect();
-            const sql = 'SELECT password FROM users WHERE user_name=$1'
-            const result = await connection.query(sql, [usr]);
-            if (result.rows.length) {
-                const {password: hashed} = result.rows[0];
-                const validated = bcrypt.compareSync(`${password}${process.env.BCRYPT_PASSWORD}`, hashed);
-                if (validated) {
-                    const q = 'SELECT * FROM users WHERE user_name=($1)'
-                    const userInfo = await connection.query(q, [usr]);
-                    return this.cleaned_user(userInfo.rows[0]);
-                }
+    async authenticate(user_name: string, pw: string): Promise<null | User> {
+        try{
+            const connection = await client.connect()
+            const sql = 'select * from users where user_name=($1);';
+            const result = await connection.query(sql, [user_name]);
+            let authentication: null | User = null
+            if(result.rows.length) {
+                const {id, user_name, first_name, last_name, password} = result.rows[0]
+                const usr: User = formatUser(id, user_name, first_name, last_name, password)
+                if(bcrypt.compareSync(pw + PEPPER, usr.password)) {authentication = usr}
             }
-            connection.release();
-            return null;
+            return authentication
         } catch (e) {
-            throw new Error(`${e}`);
+            throw new Error(`The user: ${user_name} is not authenticated yet, ${e}`)
         }
+
     }
 }
-
-export default UserModel
 
