@@ -8,9 +8,9 @@ export type User = {
 
 
 export type Order = {
-  id?: number;
-  userId: number;
+  id?: number | undefined;
   status: string;
+  userId: number;
 };
 
 export type orderDetails = {

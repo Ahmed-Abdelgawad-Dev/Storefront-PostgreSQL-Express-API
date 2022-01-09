@@ -13,6 +13,6 @@ export const formatOrderDetails = (id: number, prodId: number, quantity: number,
 
 export const formatOrder = (id: number, status: string, user_id: number): Order => {
     return {
-        id, status, userId: user_id
+        id: id, status: status, userId: user_id
     }
 }
