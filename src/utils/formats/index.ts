@@ -1,4 +1,4 @@
-import {User, orderDetails} from '../../types'
+import {Order, orderDetails, User} from '../../types'
 
 export const formatUser = (id: number, user_name: string, first_name: string, last_name: string, password: string): User => {
     return {
@@ -9,4 +9,10 @@ export const formatUser = (id: number, user_name: string, first_name: string, la
 
 export const formatOrderDetails = (id: number, prodId: number, quantity: number, ordId: number): orderDetails => {
     return {id, prodId, quantity, ordId}
+}
+
+export const formatOrder = (id: number, status: string, user_id: number): Order => {
+    return {
+        id, status, userId: user_id
+    }
 }

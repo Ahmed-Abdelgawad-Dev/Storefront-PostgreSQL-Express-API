@@ -19,3 +19,10 @@ export type orderDetails = {
     quantity: number;
     ordId: number;
 }
+
+export type Product = {
+    id?: number;
+    name: string;
+    price: number;
+    category: string;
+}

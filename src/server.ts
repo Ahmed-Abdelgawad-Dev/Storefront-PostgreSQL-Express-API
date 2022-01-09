@@ -5,6 +5,7 @@ import dotenv from 'dotenv'
 import { usersRouter } from './controllers/userController';
 import bodyParser from 'body-parser'
 import errorMiddleware from "./utils/errorMiddleware";
+import {productsRouter} from "./controllers/productController";
 
 
 const app: express.Application = express()
@@ -28,6 +29,7 @@ app.get('/', function (_req: Request, res: Response) {
 })
 
 usersRouter(app)
+productsRouter(app)
 
 app.listen(3000, function () {
     console.log(`Server is running on:  127.0.0.1:${PORT}`)

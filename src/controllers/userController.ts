@@ -5,7 +5,7 @@ import {createToken, verifyToken} from "../utils/jwtAuth";
 
 const userModel = new UserModel()
 
-const index = async (_req:Request, res: Response) => {
+export const index = async (_req:Request, res: Response) => {
     try{
       const users = await userModel.index()
       res.json(users)
@@ -15,7 +15,7 @@ const index = async (_req:Request, res: Response) => {
     }
 }
 
-const create = async (req:Request, res: Response, next: NextFunction) => {
+export const create = async (req:Request, res: Response, next: NextFunction) => {
         const usrDetails: User = {
             user_name: req.body.user_name, first_name: req.body.first_name,
             last_name: req.body.last_name, password: req.body.password
@@ -31,7 +31,7 @@ const create = async (req:Request, res: Response, next: NextFunction) => {
         }
 }
 
-const show = async(req: Request, res: Response) => {
+export const show = async(req: Request, res: Response) => {
     try{
         const usr = await userModel.show(parseInt(req.params.id))
         res.json(usr)
@@ -42,7 +42,7 @@ const show = async(req: Request, res: Response) => {
     }
 }
 
-const authenticate = async (req: Request, res: Response) => {
+export const authenticate = async (req: Request, res: Response) => {
     try{
         const usr = await userModel.authenticate(req.body.user_name, req.body.password)
         if(usr) {
@@ -55,7 +55,7 @@ const authenticate = async (req: Request, res: Response) => {
     }
 }
 
-const removeProductInOrderByUser = async (req: Request, res: Response) => {
+export const removeProductInOrderByUser = async (req: Request, res: Response) => {
     try{
         const usrId = parseInt(req.params.id)
         const {product_id} = req.body
@@ -67,7 +67,7 @@ const removeProductInOrderByUser = async (req: Request, res: Response) => {
     }
 }
 
-const addProductToOrderByUser = async (req: Request, res: Response) => {
+export const addProductToOrderByUser = async (req: Request, res: Response) => {
     try{
         const usrId = parseInt(req.params.id)
         const {product_id, quantity} = req.body
@@ -86,5 +86,4 @@ export const usersRouter = (app: express.Application): void => {
     app.post('/users/auth',  authenticate)
     app.post('/users/:id/add-product', addProductToOrderByUser)
     app.post('/users/:id/remove-product', removeProductInOrderByUser)
-
 }
