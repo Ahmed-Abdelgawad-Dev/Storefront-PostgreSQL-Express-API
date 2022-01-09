@@ -5,3 +5,17 @@ export type User = {
     last_name: string;
     password: string;
 }
+
+
+export type Order = {
+  id?: number;
+  userId: number;
+  status: string;
+};
+
+export type orderDetails = {
+    id?: number;
+    prodId: number;
+    quantity: number;
+    ordId: number;
+}

@@ -1,8 +1,8 @@
 import client from "../database";
 import bcrypt from 'bcrypt'
 import dotenv from 'dotenv'
-import {User} from "../types";
-import {formatUser} from "../utils/formats";
+import {orderDetails, User} from "../types";
+import {formatOrderDetails, formatUser} from "../utils/formats";
 
 
 
@@ -73,25 +73,52 @@ export class UserModel {
             // @ts-ignore
             throw new Error(`The user: ${user_name} is not authenticated yet, ${e.message}`)
         }
+    }
 
+    async removeProdInOrderByUser(usrId: number, prodId: number): Promise<orderDetails | undefined> {
+        try{
+            const connection = await client.connect()
+            const usrOrderSQL = "select id from orders where user_id = ($1) and status = 'active';";
+            const usrOrdResult = await connection.query(usrOrderSQL, [usrId])
+            const ordId: number = usrOrdResult.rows[0].id
+            if(ordId){
+                const deleteProd =
+                    'delete from order_details where order_id = ($1) and product_id = ($2) returning *;';
+                const result = await connection.query(deleteProd, [ordId, prodId])
+                const {id, product_id, quantity, order_id} = result.rows[0]
+                connection.release()
+                return formatOrderDetails(id, Number(product_id), quantity, Number(order_id))
+            } else{
+                connection.release()
+            }
+        }catch (e) {
+            // @ts-ignore
+            throw new Error(`${e.message}`)
+        }
+    }
 
-        // try{
-        //     const connection = await client.connect()
-        //     const sql = 'select password from users where user_name=($1);';
-        //     const result = await connection.query(sql, [user_name]);
-        //
-        //
-        //     let authentication: null | User = null
-        //     if(result.rows.length) {
-        //         const {id, user_name, first_name, last_name, password} = result.rows[0]
-        //         const usr: User = formatUser(id, user_name, first_name, last_name, password)
-        //         if(bcrypt.compareSync(pw + PEPPER, usr.password)) {authentication = usr}
-        //     }
-        //     return authentication
-        // }
-        // catch (e) {
-        //     throw new Error(`The user: ${user_name} is not authenticated yet, ${e}`)
-        // }
+    async addProdToOrderByUser(usrId: number, prodId: number, quant: number): Promise<orderDetails | undefined> {
+        try{
+            const connection = await client.connect()
+            const sql = "select id from orders where user_id = ($1) and status = 'active';";
+            const result = await connection.query(sql, [usrId])
+            const ordId: number = result.rows[0].id
+            if(ordId){
+                const injectProd =
+                    'insert into order_details (product_id, quantity, order_id) values ($1,$2,$3) returning *;';
+                const q = await connection.query(injectProd, [
+                    prodId, quant, ordId
+                ])
+                const {id, product_id, quantity, order_id} = q.rows[0]
+                connection.release()
+                return formatOrderDetails(id, Number(product_id), quantity, Number(order_id))
+            }else{
+                connection.release()
+                console.log(`User ${prodId} has no orders active.`)
+            }
+        }catch (e) {
+            throw new Error(`${e} - Product: ${prodId} can not be added.`)
+        }
     }
 }
 
