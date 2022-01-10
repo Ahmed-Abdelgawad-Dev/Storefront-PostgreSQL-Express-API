@@ -43,6 +43,38 @@ export class UserModel {
         }
     }
 
+    async edit(usr:  User): Promise<User> {
+        try{
+            const connection = await client.connect()
+            const result = await connection.query(
+                'update users set user_name=$1, first_name=$2, last_name=$3, password=$4 where id=$5 returning *;',
+                [
+                    usr.user_name, usr.first_name, usr.last_name,
+                    bcrypt.hashSync(usr.password + PEPPER, parseInt(SALT_ROUNDS as unknown as string)),
+                    usr.id
+                ]
+            )
+            const {id, user_name, first_name, last_name, password} = result.rows[0]
+            connection.release()
+            return formatUser(id, user_name, first_name, last_name, password)
+        }catch (e) {
+            throw new Error(`${e}`)
+        }
+    }
+
+    async delete(id:  number): Promise<User> {
+        try{
+            const connection = await client.connect()
+            const result = await connection.query(
+                'delete from users where id=($1) returning *',
+                [id])
+            connection.release()
+            return result.rows[0]
+        }catch (e) {
+            throw new Error(`Can not delete user: ${e}`)
+        }
+    }
+
     async show(usr_id:  number): Promise<User> {
         try{
             const connection = await client.connect()
@@ -74,6 +106,8 @@ export class UserModel {
             throw new Error(`The user: ${user_name} is not authenticated yet, ${e.message}`)
         }
     }
+
+
 
     async removeProdInOrderByUser(usrId: number, prodId: number): Promise<orderDetails | undefined> {
         try{

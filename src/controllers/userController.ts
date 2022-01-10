@@ -31,6 +31,30 @@ export const create = async (req:Request, res: Response, next: NextFunction) => 
         }
 }
 
+export const edit = async (req:Request, res: Response, next: NextFunction) => {
+        try{
+            const usr= await userModel.edit(req.body)
+            res.json(createToken(usr.user_name))
+            next()
+        }catch (e) {
+            // @ts-ignore
+            res.status(500).send(`${e.message}`)
+
+        }
+}
+
+export const del = async (req:Request, res: Response, next: NextFunction) => {
+        try{
+            const usr= await userModel.delete(req.params.id as unknown as number)
+            res.json(usr)
+            next()
+        }catch (e) {
+            // @ts-ignore
+            res.status(500).send(`${e.message}`)
+
+        }
+}
+
 export const show = async(req: Request, res: Response) => {
     try{
         const usr = await userModel.show(parseInt(req.params.id))
@@ -86,4 +110,6 @@ export const usersRouter = (app: express.Application): void => {
     app.post('/users/auth',  authenticate)
     app.post('/users/:id/add-product', addProductToOrderByUser)
     app.delete('/users/:id/remove-product', removeProductInOrderByUser)
+    app.patch('/users/edit', edit)
+    app.delete('/users/del/:id', del)
 }
