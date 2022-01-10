@@ -79,37 +79,11 @@ export const authenticate = async (req: Request, res: Response) => {
     }
 }
 
-export const removeProductInOrderByUser = async (req: Request, res: Response) => {
-    try{
-        const usrId = parseInt(req.params.id)
-        const {product_id} = req.body
-        const orderInfo = await userModel.removeProdInOrderByUser(usrId, product_id)
-        res.json(orderInfo)
-    }catch (e) {
-        // @ts-ignore
-        res.status(500).send(`${e.message}`)
-    }
-}
-
-export const addProductToOrderByUser = async (req: Request, res: Response) => {
-    try{
-        const usrId = parseInt(req.params.id)
-        const {product_id, quantity} = req.body
-        const orderInfo = await userModel.addProdToOrderByUser(usrId, product_id, quantity)
-        res.json(orderInfo)
-    }catch (e) {
-        // @ts-ignore
-        res.status(500).send(`${e.message}`)
-    }
-}
-
 export const usersRouter = (app: express.Application): void => {
     app.get('/users', index)
     app.get('/users/:id', show)
     app.post('/users/create', create)
     app.post('/users/auth',  authenticate)
-    app.post('/users/:id/add-product', addProductToOrderByUser)
-    app.delete('/users/:id/remove-product', removeProductInOrderByUser)
     app.patch('/users/edit', edit)
     app.delete('/users/del/:id', del)
 }

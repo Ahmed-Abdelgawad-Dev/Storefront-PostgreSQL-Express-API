@@ -4,6 +4,16 @@ import {ProductModel} from "../models/product";
 
 const productModel = new ProductModel()
 
+const create = async (request: Request, response: Response) => {
+    try{
+        const prodDetails: Product = {name: request.body.name, price: request.body.price, category: request.body.category}
+        const newProduct = await productModel.createProduct(prodDetails)
+        response.json(newProduct)
+    }catch (e) {
+        response.status(500).send(`${e}`)
+    }
+}
+
 const index = async (_request: Request, response: Response) => {
     try{
         const items =await productModel.index()
@@ -22,19 +32,23 @@ const show = async (_request: Request, response: Response) => {
     }
 }
 
-const createProduct = async (request: Request, response: Response) => {
+const update = async (request: Request, response: Response) => {
     try{
-        const prodDetails: Product = {name: request.body.name, price: request.body.price, category: request.body.category}
-        const newProduct = await productModel.create(prodDetails)
-        response.json(newProduct)
+        const updatedProd = await productModel.updateProduct(request.body)
+        response.json({
+            name: updatedProd.name,
+            price: updatedProd.price,
+            category: updatedProd.category
+        })
     }catch (e) {
-        response.status(500).send(`${e}`)
+        // response.status(500).send(`${e}`)
+        throw new Error(`Cant update : ${e}`)
     }
 }
 
-const deleteProduct = async (request: Request, response: Response) => {
+const destroy = async (request: Request, response: Response) => {
     try{
-        const deletedProd = await productModel.delete(parseInt(request.params.id))
+        const deletedProd = await productModel.deleteProduct(parseInt(request.params.id))
         response.json(deletedProd)
     }catch (e) {
         response.status(500).send(`${e}`)
@@ -42,24 +56,10 @@ const deleteProduct = async (request: Request, response: Response) => {
     }
 }
 
-// const updateProduct = async (request: Request, response: Response) => {
-//     try{
-//         const updatedProd = await productModel.update(request.body)
-//         response.json({
-//             name: updatedProd.name,
-//             price: updatedProd.price,
-//             category: updatedProd.category
-//         })
-//     }catch (e) {
-//         // response.status(500).send(`${e}`)
-//         throw new Error(`Cant update : ${e}`)
-//     }
-// }
-
 export const productsRouter = (app: express.Application): void => {
+    app.post('/products/create', create)
     app.get('/products', index)
     app.get('/products/:id', show)
-    app.post('/products/create', createProduct)
-    app.delete('/products/delete/:id', deleteProduct)
-    // app.patch('/products/update/:id', updateProduct)
+    app.patch('/products/update', update)
+    app.delete('/products/delete/:id', destroy)
 }

@@ -11,7 +11,7 @@ export const formatOrderDetails = (id: number, prodId: number, quantity: number,
     return {id, prodId, quantity, ordId}
 }
 
-export const formatOrder = (id: number, status: string, user_id: number): Order => {
+export const formatOrder = (id: number , status: string, user_id: number): Order => {
     return {
         id: id, status: status, userId: user_id
     }

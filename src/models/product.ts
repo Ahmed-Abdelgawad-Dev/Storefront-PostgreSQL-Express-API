@@ -2,6 +2,21 @@ import client from "../database";
 import {Product} from "../types";
 
 export class ProductModel {
+    async createProduct(product: Product): Promise<Product> {
+        try{
+            const connection = await client.connect()
+            const result = await connection.query(
+                'insert into products (name, price, category) values ($1,$2, $3) returning *;',
+                [product.name, product.price, product.category]
+            )
+            const newItemProduct = result.rows[0]
+            connection.release()
+            return newItemProduct
+        }catch (e) {
+            // @ts-ignore
+            throw new Error(`Product ${product.name} can not be add. - ${e.message}`)
+        }
+    }
     async index(): Promise<Product[]> {
         try{
             const connection = await client.connect()
@@ -27,22 +42,20 @@ export class ProductModel {
         }
     }
 
-    async create(product: Product): Promise<Product> {
+    async updateProduct(p: Product): Promise<Product> {
         try{
             const connection = await client.connect()
             const result = await connection.query(
-                'insert into products (name, price, category) values ($1,$2, $3) returning *;',
-                [product.name, product.price, product.category]
-            )
-            const newItemProduct = result.rows[0]
+                'update products set name=$1, price=$2, category=$3 where id=$4 returning *;',
+                [p.name, p.price, p.category, p.id])
             connection.release()
-            return newItemProduct
+            return result.rows[0]
         }catch (e) {
             // @ts-ignore
-            throw new Error(`Product ${product.name} can not be add. - ${e.message}`)
+            throw new Error(`${e.message}`)
         }
     }
-        async delete(ID: number): Promise<Product> {
+    async deleteProduct(ID: number): Promise<Product> {
         try{
             const connection = await client.connect()
             const result = await connection.query(
@@ -57,21 +70,6 @@ export class ProductModel {
         }
     }
 
-    // async update(p: Product): Promise<Product> {
-    //     try{
-    //         const connection = await client.connect()
-    //         const sql = 'UPDATE products SET name=$1, price=$2, category=$3 WHERE id=$4 RETURNING *;'
-    //         const result = await connection.query(
-    //             sql,
-    //             [p.id, p.name, p.price, p.category]
-    //         )
-    //         const updatedItem = result.rows[0]
-    //         connection.release()
-    //         return updatedItem
-    //     }catch (e) {
-    //         // @ts-ignore
-    //         throw new Error(`${e.message}`)
-    //     }
-    // }
+
 
 }
