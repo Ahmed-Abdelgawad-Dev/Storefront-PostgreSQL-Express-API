@@ -5,7 +5,7 @@ const orderModel = new OrderModel()
 
 const create = async (request: Request, response: Response) => {
     try{
-        const usrId = request.body.usrId
+        const usrId = request.body.user_id
         const createdOrder = await orderModel.create(usrId)
         response.json(createdOrder)
     } catch (e) {

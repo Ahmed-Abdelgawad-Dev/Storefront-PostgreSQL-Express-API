@@ -11,21 +11,22 @@ export class OrderModel {
                 "select id from orders where status = 'active' and user_id = ($1);",
                 [usrId]
             )
-            if (userActiveOrder.rows[0]) {
+            const result = userActiveOrder.rows[0]
+            if (result) {
                 connection.release()
-                throw new Error(`This is a test error`)
+                throw new Error(`Active order already existed`)
             } else {
-                const result = await connection.query(
+                const result2 = await connection.query(
                     'insert into orders (status,user_id) values ($1, $2) returning *;',
                     ['active', usrId]
                 )
-                const {id, status, user_id} = result.rows[0]
+                const {id, status, user_id} = result2.rows[0]
                 connection.release()
                 return formatOrder(id, status, Number(user_id))
             }
         } catch (e) {
             // @ts-ignore
-            throw new Error(`Failed when creating order: ${e.message}`)
+            throw new Error(`Failed when creating an order: ${e.message}`)
         }
     }
 }

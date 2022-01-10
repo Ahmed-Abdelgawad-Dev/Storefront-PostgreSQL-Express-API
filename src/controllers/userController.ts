@@ -85,5 +85,5 @@ export const usersRouter = (app: express.Application): void => {
     app.post('/users/create', create)
     app.post('/users/auth',  authenticate)
     app.post('/users/:id/add-product', addProductToOrderByUser)
-    app.post('/users/:id/remove-product', removeProductInOrderByUser)
+    app.delete('/users/:id/remove-product', removeProductInOrderByUser)
 }

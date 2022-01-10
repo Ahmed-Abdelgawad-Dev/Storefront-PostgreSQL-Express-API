@@ -104,11 +104,9 @@ export class UserModel {
             const result = await connection.query(sql, [usrId])
             const ordId: number = result.rows[0].id
             if(ordId){
-                const injectProd =
-                    'insert into order_details (product_id, quantity, order_id) values ($1,$2,$3) returning *;';
-                const q = await connection.query(injectProd, [
-                    prodId, quant, ordId
-                ])
+                const q =
+                    await connection.query('insert into order_details (product_id, quantity, order_id) values ($1,$2,$3) returning *;'
+                    , [prodId, quant, ordId])
                 const {id, product_id, quantity, order_id} = q.rows[0]
                 connection.release()
                 return formatOrderDetails(id, Number(product_id), quantity, Number(order_id))
