@@ -84,5 +84,5 @@ export const usersRouter = (app: express.Application): void => {
     app.get('/users/:id', show)
     app.patch('/users/edit', edit)
     app.delete('/users/del/:id', del)
-    app.post('/users/auth',  authenticate)
+    // app.post('/users/auth',  authenticate)
 }

@@ -10,7 +10,7 @@ export type User = {
 export type Order = {
   id?: number;
   status: string;
-  userId: number;
+  user_id: number;
 };
 
 export type orderDetails = {
