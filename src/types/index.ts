@@ -8,7 +8,7 @@ export type User = {
 
 
 export type Order = {
-  id?: number | undefined;
+  id?: number;
   status: string;
   userId: number;
 };

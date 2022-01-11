@@ -52,7 +52,6 @@ const destroy = async (request: Request, response: Response) => {
         response.json(deletedProd)
     }catch (e) {
         response.status(500).send(`${e}`)
-        // throw new Error(`Cant delete : ${e}`)
     }
 }
 

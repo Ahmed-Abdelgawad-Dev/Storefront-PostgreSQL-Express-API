@@ -1,8 +1,8 @@
 import client from "../database";
 import bcrypt from 'bcrypt'
 import dotenv from 'dotenv'
-import {orderDetails, User} from "../types";
-import {formatOrderDetails, formatUser} from "../utils/formats";
+import {User} from "../types";
+import {formatUser} from "../utils/formats";
 
 
 
@@ -10,21 +10,6 @@ dotenv.config()
 
 const {SALT_ROUNDS, PEPPER} = process.env
 export class UserModel {
-
-    async index(): Promise<User[]> {
-        try {
-            const connection = await client.connect()
-            const sql = 'select * from users;'
-            const result = await connection.query(sql)
-            connection.release()
-            return result.rows.map((usr) => {
-                return formatUser(usr.id, usr.user_name, usr.first_name, usr.last_name, usr.password)
-            })
-        } catch (e) {
-            throw new Error(`${e}`)
-        }
-    }
-
     async create(usr: User): Promise<User> {
         try {
             const connection = await client.connect()
@@ -42,6 +27,35 @@ export class UserModel {
             throw new Error(`${usr.user_name} can not be created: ${e.message}`)
         }
     }
+
+    async index(): Promise<User[]> {
+        try {
+            const connection = await client.connect()
+            const sql = 'select * from users;'
+            const result = await connection.query(sql)
+            connection.release()
+            return result.rows.map((usr) => {
+                return formatUser(usr.id, usr.user_name, usr.first_name, usr.last_name, usr.password)
+            })
+        } catch (e) {
+            throw new Error(`${e}`)
+        }
+    }
+
+    async show(usr_id: number): Promise<User> {
+        try {
+            const connection = await client.connect()
+            const sql = 'select * from users where id=($1)'
+            const result = await connection.query(sql, [usr_id])
+            const {id, user_name, first_name, last_name, password} = result.rows[0]
+            connection.release()
+            return formatUser(id, user_name, first_name, last_name, password)
+        } catch (e) {
+            console.log(e)
+            throw new Error(`${e}`)
+        }
+    }
+
 
     async edit(usr: User): Promise<User> {
         try {
@@ -75,19 +89,6 @@ export class UserModel {
         }
     }
 
-    async show(usr_id: number): Promise<User> {
-        try {
-            const connection = await client.connect()
-            const sql = 'select * from users where id=($1)'
-            const result = await connection.query(sql, [usr_id])
-            const {id, user_name, first_name, last_name, password} = result.rows[0]
-            connection.release()
-            return formatUser(id, user_name, first_name, last_name, password)
-        } catch (e) {
-            console.log(e)
-            throw new Error(`${e}`)
-        }
-    }
 
     async authenticate(user_name: string, pw: string): Promise<null | User> {
         try {

@@ -19,7 +19,7 @@ const unauthedError = (next: NextFunction) => {
 };
 export const verifyToken = (req: Request, res: Response, next: NextFunction): void => {
     try {
-    const headerAuth = req.headers.authorization
+    const headerAuth = String(req.headers.authorization)
     if (headerAuth) {
       const bearer = headerAuth.split(' ')[0].toLowerCase();
       const token = headerAuth.split(' ')[1];

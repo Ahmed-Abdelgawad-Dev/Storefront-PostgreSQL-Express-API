@@ -69,7 +69,4 @@ export class ProductModel {
             throw new Error(`Can not delete the item:  ${e.message}`)
         }
     }
-
-
-
 }
