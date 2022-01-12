@@ -17,6 +17,7 @@ export class ProductModel {
             throw new Error(`Product ${product.name} can not be add. - ${e.message}`)
         }
     }
+
     async index(): Promise<Product[]> {
         try{
             const connection = await client.connect()
@@ -55,6 +56,7 @@ export class ProductModel {
             throw new Error(`${e.message}`)
         }
     }
+
     async deleteProduct(ID: number): Promise<Product> {
         try{
             const connection = await client.connect()
