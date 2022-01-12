@@ -56,9 +56,9 @@ const destroy = async (request: Request, response: Response) => {
 }
 
 export const productsRouter = (app: express.Application): void => {
-    app.post('/products/create', create)
-    app.get('/products', index)
-    app.get('/products/:id', show)
-    app.patch('/products/update', update)
-    app.delete('/products/delete/:id', destroy)
+    app.post('/products/create',verifyToken, create)
+    app.get('/products',verifyToken, index)
+    app.get('/products/:id',verifyToken, show)
+    app.patch('/products/update',verifyToken, update)
+    app.delete('/products/delete/:id',verifyToken, destroy)
 }

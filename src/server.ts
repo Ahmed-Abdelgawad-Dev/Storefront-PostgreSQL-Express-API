@@ -7,6 +7,7 @@ import bodyParser from 'body-parser'
 import errorMiddleware from "./utils/errorMiddleware";
 import {productsRouter} from "./controllers/productController";
 import {ordersRouter} from "./controllers/orderController";
+import {verifyToken} from "./utils/jwtAuth";
 
 
 const app: express.Application = express()

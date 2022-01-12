@@ -49,6 +49,14 @@ const destroy = async (request: Request, response: Response) => {
     }
 }
 
+const ordByUsrId = async (request: Request, response: Response) => {
+    try{
+        const order = await orderModel.ordByUsrId(request.params.id as unknown as number)
+        response.json(order)
+    }catch (e) {
+        response.status(500).send(`${e}`)
+    }
+}
 
 export const ordersRouter = (app: Application): void =>{
     app.post('/orders/create',verifyToken, create)
@@ -56,4 +64,5 @@ export const ordersRouter = (app: Application): void =>{
     app.get('/orders/:id',verifyToken, show)
     app.patch('/orders/:id',verifyToken, update)
     app.delete('/orders/:id',verifyToken, destroy)
+    app.get('/orders/user/:id',verifyToken, ordByUsrId)
 }

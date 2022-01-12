@@ -43,7 +43,7 @@ export class OrderModel {
             connection.release()
             return result.rows[0]
         }catch (e) {
-            throw new Error((`${e}`))
+            throw new Error(`${e}`)
         }
     }
 
@@ -57,7 +57,7 @@ export class OrderModel {
             connection.release()
             return result.rows[0]
         }catch (e) {
-            throw new Error((`Can not edit product ${ord.id} - ${e}`))
+            throw new Error(`Can not edit product ${ord.id} - ${e}`)
         }
     }
 
@@ -68,7 +68,20 @@ export class OrderModel {
             connection.release()
             return result.rows[0]
         }catch (e) {
-            throw new Error((`${e}`))
+            throw new Error(`${e}`)
+        }
+    }
+    async ordByUsrId(usrId: number): Promise<Order> {
+        try{
+            const connection = await client.connect()
+            const result = await connection.query(
+                "select o.id as id, u.user_name, JSON_AGG(JSONB_BUILD_OBJECT('product_id', p.id, 'name', p.name, 'price', p.price, 'category', p.category, 'quantity', od.quantity)) as products, o.status as status from orders as o left join order_details as od on o.id = od.order_id left join products as p on od.product_id = p.id left join users as u on u.id = o.user_id where o.user_id = $1 and o.status = 'active' group by o.id, u.user_name, o.status, o.user_id;",
+                [usrId]
+            )
+            connection.release()
+            return result.rows[0]
+        }catch (e) {
+            throw new Error(`${e}`)
         }
     }
 }
