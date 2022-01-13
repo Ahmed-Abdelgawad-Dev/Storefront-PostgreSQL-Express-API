@@ -41,9 +41,9 @@ export const show = async (req: Request, res: Response) => {
     }
 }
 
-export const edit = async (req: Request, res: Response, next: NextFunction) => {
+export const update = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const usr = await userModel.edit(req.body)
+        const usr = await userModel.update(req.body)
         res.json(createToken(usr.user_name))
         next()
     } catch (e) {
@@ -53,9 +53,9 @@ export const edit = async (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
-export const del = async (req: Request, res: Response, next: NextFunction) => {
+export const destroy = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const usr = await userModel.delete(req.params.id as unknown as number)
+        const usr = await userModel.destroy(req.params.id as unknown as number)
         res.json(usr)
         next()
     } catch (e) {
@@ -82,7 +82,7 @@ export const usersRouter = (app: express.Application): void => {
     app.post('/users/create', create)
     app.get('/users', verifyToken, index)
     app.get('/users/:id', verifyToken, show)
-    app.patch('/users/edit', verifyToken, edit)
-    app.delete('/users/del/:id', verifyToken, del)
+    app.patch('/users/update', verifyToken, update)
+    app.delete('/users/destroy/:id', verifyToken, destroy)
     app.post('/users/auth', verifyToken, authenticate)
 }

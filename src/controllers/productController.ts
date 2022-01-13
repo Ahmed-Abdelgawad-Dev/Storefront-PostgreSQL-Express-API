@@ -1,7 +1,7 @@
 import express, {Request, Response} from "express";
 import {Product} from "../types";
 import {ProductModel} from "../models/product";
-import {createToken, verifyToken} from "../utils/jwtAuth";
+import {verifyToken} from "../utils/jwtAuth";
 const productModel = new ProductModel()
 
 const create = async (request: Request, response: Response) => {

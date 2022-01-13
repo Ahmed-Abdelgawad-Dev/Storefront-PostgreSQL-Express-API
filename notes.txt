@@ -1,0 +1,18 @@
+//------------------------------------
+// const deleteAllUsers = `DELETE FROM users;
+// ALTER SEQUENCE users_id_seq RESTART WITH 1;
+// UPDATE users SET id = DEFAULT`;
+
+
+// afterAll(async () => {
+//     try {
+//         const conn = await client.connect();
+//         await conn.query(deleteAllOrderProducts);
+//         await conn.query(deleteAllOrderProducts);
+//         await conn.query(deleteAllOrderProducts);
+//         await conn.query(deleteAllUsers);
+//         conn.release();
+//     } catch (error) {
+//         throw new Error(`unable to delete all recored afterAll test: ${error}`);
+//     }
+// })

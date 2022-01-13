@@ -56,7 +56,7 @@ export class UserModel {
     }
 
 
-    async edit(usr: User): Promise<User> {
+    async update(usr: User): Promise<User> {
         try {
             const connection = await client.connect()
             const result = await connection.query(
@@ -75,7 +75,7 @@ export class UserModel {
         }
     }
 
-    async delete(id: number): Promise<User> {
+    async destroy(id: number): Promise<User> {
         try {
             const connection = await client.connect()
             const result = await connection.query(
