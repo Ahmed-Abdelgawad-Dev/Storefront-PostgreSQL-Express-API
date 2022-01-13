@@ -7,7 +7,7 @@ import bodyParser from 'body-parser'
 import errorMiddleware from "./utils/errorMiddleware";
 import {productsRouter} from "./controllers/productController";
 import {ordersRouter} from "./controllers/orderController";
-import {verifyToken} from "./utils/jwtAuth";
+import {orderDetailsRouter} from "./controllers/orderDetailsController";
 
 
 const app: express.Application = express()
@@ -33,6 +33,7 @@ app.get('/', function (_req: Request, res: Response) {
 usersRouter(app)
 productsRouter(app)
 ordersRouter(app)
+orderDetailsRouter(app)
 
 app.listen(3000, function () {
     console.log(`Server is running on:  127.0.0.1:${PORT}`)

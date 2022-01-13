@@ -13,12 +13,12 @@ export type Order = {
   user_id: number;
 };
 
-export type orderDetails = {
-    id?: number;
-    prodId: number;
+export type OrderDetails = {
+    id?: number | undefined;
+    product_id: number;
     quantity: number;
-    ordId: number;
-    products?: Product[];
+    order_id: number;
+    products?: Product[] | undefined;
 }
 
 export type Product = {
