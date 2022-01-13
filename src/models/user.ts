@@ -23,7 +23,7 @@ export class UserModel {
             return formatUser(id, user_name, first_name, last_name, password)
         } catch (e) {
             // @ts-ignore
-            throw new Error(`${usr.user_name} can not be created: ${e.message}`)
+            throw new Error(`User ${usr.user_name} can not be created: ${e.message}`)
         }
     }
 
