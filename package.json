@@ -2,16 +2,16 @@
   "name": "storefront",
   "version": "0.1.0",
   "description": "",
-  "main": "server.ts",
+  "main": "src/server.ts",
   "scripts": {
     "build": "npx tsc",
     "start": "nodemon src/server.ts",
-    "test": "cross-env ENV=dev npm run migrate-and-jasmine",
+    "test": "cross-env ENV=test npm run migrate-plus-jasmine",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess 'node ./dist/server.js'",
     "lint": "eslint . --ext .ts",
     "prettier": "prettier --config .prettierrc 'src/**/*.ts' --write",
-    "jasmine": "jasmine; exit 0",
-    "migrate-and-jasmine": "db-migrate up -e dev && npm run build && npm run jasmine && db-migrate reset -e dev"
+    "jasmine": "jasmine --config=./spec/support/jasmine.json",
+    "migrate-plus-jasmine": "db-migrate up -e test && npm run build && npm run jasmine && db-migrate reset -e test"
   },
   "author": "Ahmed Abdelgawad",
   "license": "ISC",

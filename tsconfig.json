@@ -20,6 +20,7 @@
   "exclude": [
     "node_modules",
     "spec",
-    "dist"
+    "dist",
+    "build"
   ]
 }
