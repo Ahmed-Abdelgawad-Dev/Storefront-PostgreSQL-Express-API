@@ -76,23 +76,23 @@ export const destroy = async (
   }
 };
 
-// export const authenticate = async (req: Request, res: Response) => {
-//   try {
-//     const usr = await userModel.authenticate(
-//       req.body.user_name,
-//       req.body.password
-//     );
-//     if (usr) {
-//       res.json(createToken(usr.user_name));
-//       // res.json(usr.user_name)
-//     } else {
-//       res.send('Please enter a valid user name and password.');
-//     }
-//   } catch (e) {
-//     // @ts-ignore
-//     res.status(500).send(`${e.message}`);
-//   }
-// };
+export const authenticate = async (req: Request, res: Response) => {
+  try {
+    const usr = await userModel.authenticate(
+      req.body.user_name,
+      req.body.password
+    );
+    if (usr) {
+      res.json(createToken(usr.user_name));
+      // res.json(usr.user_name)
+    } else {
+      res.send('Please enter a valid user name and password.');
+    }
+  } catch (e) {
+    // @ts-ignore
+    res.status(500).send(`${e.message}`);
+  }
+};
 
 export const usersRouter = (app: express.Application): void => {
   app.post('/users/create', create);
@@ -100,5 +100,5 @@ export const usersRouter = (app: express.Application): void => {
   app.get('/users/:id', verifyToken, show);
   app.patch('/users/update', verifyToken, update);
   app.delete('/users/destroy/:id', verifyToken, destroy);
-  // app.post('/users/auth', verifyToken, authenticate);
+  app.post('/users/auth', verifyToken, authenticate);
 };

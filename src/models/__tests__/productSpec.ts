@@ -2,11 +2,8 @@ import { ProductModel } from '../product';
 import { Product } from '../../types';
 import client from '../../database';
 import dotenv from 'dotenv';
-import _ from 'lodash';
-import bcrypt from 'bcrypt';
 
 dotenv.config();
-const { SALT_ROUNDS, PEPPER } = process.env;
 
 const productModel = new ProductModel();
 
@@ -17,12 +14,12 @@ const prodList: Product[] = [
   { name: 'prod3', price: 103, category: 'category3' }
 ];
 
-const listWithId = prodList.map((p, index) => {
-  p.id = index + 1;
+const listWithId = prodList.map((p, i) => {
+  p.id = i + 1;
   return p;
 });
 
-describe('Product Instance', () => {
+describe('Product Model Instance', () => {
   describe('Testing product instance methods existence:', () => {
     it('Index method defined', function () {
       expect(productModel.index).toBeDefined();
@@ -47,8 +44,8 @@ describe('Product Instance', () => {
     });
 
     it('Index: retrieved list of all products', async () => {
-          const l = await productModel.index()
-          expect(l).toEqual(listWithId)
+      const l = await productModel.index();
+      expect(l).toEqual(listWithId);
     });
 
     it('productCreate: created product', async () => {
@@ -56,30 +53,56 @@ describe('Product Instance', () => {
         name: 'prod1',
         price: 100,
         category: 'category'
-      })
+      });
       expect(item).toEqual({
         id: 4,
         name: 'prod1',
         price: 100,
         category: 'category'
-      })
+      });
     });
 
     it('Show:  returns a specific product by an ID', async () => {
       const result = await productModel.show(4);
 
-    expect(result).toEqual({
-      id: 4,
-      name: 'prod1',
-      price: 100,
-      category: 'category',
+      expect(result).toEqual({
+        id: 4,
+        name: 'prod1',
+        price: 100,
+        category: 'category'
+      });
     });
-  });
+    it('Delete: delete a specific product with a given ID', async () => {
+      const deletedItem = await productModel.deleteProduct(4);
+      const allProducts = await productModel.index();
+
+      expect(allProducts).not.toContain(deletedItem);
+      expect(deletedItem).toEqual({
+        id: 4,
+        name: 'prod1',
+        price: 100,
+        category: 'category'
+      });
+    });
+    it('delete should remove the product with the given id', async () => {
+      const deletedProduct = await productModel.deleteProduct(3);
+      const products = await productModel.index();
+
+      expect(products).not.toContain(deletedProduct);
+      expect(deletedProduct).toEqual({
+        id: 3,
+        name: 'prod3',
+        price: 103,
+        category: 'category3'
+      });
+    });
 
     afterAll(async () => {
       const conn = await client.connect();
-      await conn.query('delete from products;\n; alter sequence products_id_seq restart with 1;\n');
+      await conn.query(
+        'delete from products;\n; alter sequence products_id_seq restart with 1;\n'
+      );
       conn.release();
-  });
+    });
   });
 });

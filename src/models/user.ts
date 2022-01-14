@@ -104,23 +104,20 @@ export class UserModel {
     }
   }
 
-  // async authenticate(user_name: string, pw: string): Promise<null | User> {
-  //   try {
-  //     const connection = await client.connect();
-  //     const sql = 'select password from users where user_name=($1);';
-  //     const result = await connection.query(sql, [user_name]);
-  //     if (result.rows.length) {
-  //       const usr = result.rows[0];
-  //       if (bcrypt.compareSync(pw + PEPPER, usr.password)) {
-  //         return usr;
-  //       }
-  //     }
-  //     return null;
-  //   } catch (e) {
-  //     // @ts-ignore
-  //     throw new Error(
-  //       `The user: ${user_name} is not authenticated yet, ${e.message}`
-  //     );
-  //   }
-  // }
+  async authenticate(user_name: string, pw: string): Promise<null | User> {
+    try {
+      const connection = await client.connect();
+      const sql = 'select password from users where user_name=($1);';
+      const result = await connection.query(sql, [user_name]);
+      if (result.rows.length) {
+        const usr = result.rows[0];
+        if (bcrypt.compareSync(pw + PEPPER, usr.password)) {
+          return usr;
+        }
+      }
+      return null;
+    } catch (e) {
+      throw new Error(`The user: ${user_name} is not authenticated yet, ${e}`);
+    }
+  }
 }

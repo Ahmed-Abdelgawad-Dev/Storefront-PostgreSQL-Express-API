@@ -13,33 +13,33 @@ const userInstance = new UserModel();
 const usrList: User[] = [
   {
     user_name: 'testuser1',
-    first_name: 'Freddie',
-    last_name: 'Mercury',
+    first_name: 'testuser1',
+    last_name: 'testuser1',
     password: 'testpwd1'
   },
   {
     user_name: 'testuser2',
-    first_name: 'Brian',
-    last_name: 'May',
+    first_name: 'testuser2',
+    last_name: 'testuser2',
     password: 'testpwd2'
   },
   {
     user_name: 'testuser3',
-    first_name: 'John',
-    last_name: 'Deacon',
+    first_name: 'testuser3',
+    last_name: 'testuser3',
     password: 'testpwd3'
   }
 ];
 
 // Adding ids for simplicity.
-const uListWithIdsPasswords = usrList.map((u, index) => {
+const uListWithIdsPasswords = usrList.map((u, i) => {
   return {
-    id: index + 1,
+    id: i + 1,
     ..._.pick(u, ['user_name', 'first_name', 'last_name'])
   };
 });
 
-describe('User Instance', () => {
+describe('User Model Instance', () => {
   describe('Testing user instance methods existence:', () => {
     it('Index method defined', function () {
       expect(userInstance.index).toBeDefined();
@@ -50,15 +50,15 @@ describe('User Instance', () => {
     it('Show method defined', function () {
       expect(userInstance.show).toBeDefined();
     });
-    // it('Update method defined', function () {
-    //   expect(userInstance.update).toBeDefined();
-    // });
-    // it('Destroy method defined', function () {
-    //   expect(userInstance.destroy).toBeDefined();
-    // });
-    // it('Authenticate method defined', function () {
-    //   expect(userInstance.authenticate).toBeDefined();
-    // });
+    it('Update method defined', function () {
+      expect(userInstance.update).toBeDefined();
+    });
+    it('Destroy method defined', function () {
+      expect(userInstance.destroy).toBeDefined();
+    });
+    it('Authenticate method defined', function () {
+      expect(userInstance.authenticate).toBeDefined();
+    });
   });
 
   describe('Testing user instance method functionalities:', () => {
@@ -130,13 +130,18 @@ describe('User Instance', () => {
         last_name: 'ahmed4'
       });
     });
-  });
 
-  afterAll(async () => {
-    const connection = await client.connect();
-    await connection.query(
-      'delete from users; \nalter sequence users_id_seq restart with 1;'
-    );
-    connection.release();
+    it('Authenticate: null returned in case of no user', async () => {
+      const result = await userInstance.authenticate('testuser1', 'testpwd2');
+      expect(result).toBe(null);
+    });
+
+    afterAll(async () => {
+      const connection = await client.connect();
+      await connection.query(
+        'delete from users; \nalter sequence users_id_seq restart with 1;'
+      );
+      connection.release();
+    });
   });
 });
