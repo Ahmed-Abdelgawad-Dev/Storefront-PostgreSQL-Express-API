@@ -40,7 +40,7 @@ const uListWithIdsPasswords = usrList.map((u, i) => {
 });
 
 describe('User Model Instance', () => {
-  describe('Testing user instance methods existence:', () => {
+  describe('Testing User instance methods existence:', () => {
     it('Index method defined', function () {
       expect(userInstance.index).toBeDefined();
     });
