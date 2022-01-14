@@ -50,12 +50,12 @@ describe('User Instance', () => {
     it('Show method defined', function () {
       expect(userInstance.show).toBeDefined();
     });
-    it('Update method defined', function () {
-      expect(userInstance.update).toBeDefined();
-    });
-    it('Destroy method defined', function () {
-      expect(userInstance.destroy).toBeDefined();
-    });
+    // it('Update method defined', function () {
+    //   expect(userInstance.update).toBeDefined();
+    // });
+    // it('Destroy method defined', function () {
+    //   expect(userInstance.destroy).toBeDefined();
+    // });
     // it('Authenticate method defined', function () {
     //   expect(userInstance.authenticate).toBeDefined();
     // });
