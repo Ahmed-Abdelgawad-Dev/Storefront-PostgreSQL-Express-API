@@ -4,6 +4,7 @@ import client from '../../database';
 import dotenv from 'dotenv';
 import _ from 'lodash';
 import bcrypt from 'bcrypt';
+import {verifyToken} from "../../utils/jwtAuth";
 
 dotenv.config();
 const { SALT_ROUNDS, PEPPER } = process.env;
@@ -135,6 +136,15 @@ describe('User Model Instance', () => {
       const result = await userInstance.authenticate('testuser1', 'testpwd2');
       expect(result).toBe(null);
     });
+    it('Authenticate: returns an authed user', async () => {
+      const authenticatedUser = await userInstance.authenticate('x', 'x');
+      if (authenticatedUser) {
+        expect(authenticatedUser.user_name).toBe('x');
+        expect(authenticatedUser.first_name).toBe('x');
+        expect(authenticatedUser.last_name).toBe('x');
+      }
+    });
+
 
     afterAll(async () => {
       const connection = await client.connect();
