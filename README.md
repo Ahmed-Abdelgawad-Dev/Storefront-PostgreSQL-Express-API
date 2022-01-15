@@ -83,6 +83,8 @@ Clone the repo:  ***git clone*** **https://github.com/Ahmed-Abdelgawad-Dev/Store
 
 `yarn start` then the API will work on `127.0.0.1:3000` 
 
+### Release port 3000 if needed: Unix based OS ###
+`pkill -9 node`
 ### Scripts ###
 
 #### Transpile from JS to TS ####
