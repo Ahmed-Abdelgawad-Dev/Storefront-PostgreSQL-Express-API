@@ -63,8 +63,8 @@ const destroy = async (request: Request, response: Response) => {
 
 export const productsRouter = (app: express.Application): void => {
   app.post('/products/create', verifyToken, create);
-  app.get('/products', verifyToken, index);
-  app.get('/products/:id', verifyToken, show);
+  app.get('/products',  index); // auth removed
+  app.get('/products/:id', show); //auth removed
   app.patch('/products/update', verifyToken, update);
   app.delete('/products/delete/:id', verifyToken, destroy);
 };

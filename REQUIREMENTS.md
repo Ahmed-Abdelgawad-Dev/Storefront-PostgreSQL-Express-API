@@ -1,42 +1,66 @@
-# API Requirements
-The company stakeholders want to create an online storefront to showcase their great product ideas. Users need to be able to browse an index of all products, see the specifics of a single product, and add products to an order that they can view in a cart page. You have been tasked with building the API that will support this application, and your coworker is building the frontend.
-
-These are the notes from a meeting with the frontend developer that describe what endpoints the API needs to supply, as well as data shapes the frontend and backend have agreed meet the requirements of the application. 
-
 ## API Endpoints
 #### Products
-- Index 
-- Show
-- Create [token required]
-- [OPTIONAL] Top 5 most popular products 
-- [OPTIONAL] Products by category (args: product category)
+- Create [token] : `'/products/create' [POST]`
+- Index: `'/products' [GET]`
+- Show: `'/products/:id' [GET]`
+- Update: [token] : `'/products/update' [PATCH]`
+- Destroy: [token] : `'/products/delete/:id' [DELETE]`
 
 #### Users
-- Index [token required]
-- Show [token required]
-- Create N[token required]
+- Create: `'/users/create' [POST]`
+- Index: [token] : `'/users' [GET]`
+- Show: [token] : `'/users/:id' [GET]`
+- Update: [token]: `'/users/update' [PATCH]`
+- Delete: [token]: `'/users/destroy/:id' [DELETE]`
+- Authenticate: [token]: `'/users/auth' [POST]`
+#### Orders
+- Create: [token] :`'/orders/create' [POST]`
+- Index: [token] : `'/orders' [GET]`
+- Show: [token] : `'/orders/:id' [GET]`
+- Update: [token]: `'/orders/:id' [PATCH]`
+- Destroy: [token]: `'/orders/:id' [DELETE]`
+#### Order Details
+- Create: [token] :`'/order-details/create' [POST]`
+- Show: [token] : `'/order-details/usr/:id' [GET]`
+
+## Data Base Schema
+#### Products
+
+| Column        | Type               |
+| --------------|--------------------|
+| id            | SERIAL PRIMARY KEY |
+| name          | VARCHAR            |
+| price         | INTEGER            |
+| category      | VARCHAR            |
+
+#### Users
+
+| Column         | Type               |
+| ---------------|--------------------|
+| id             | SERIAL PRIMARY KEY |
+| user_name      | VARCHAR 
+| first_name     | VARCHAR            |
+| last_name      | VARCHAR            |
+| password       | VARCHAR            |
 
 #### Orders
-- Current Order by user (args: user id)[token required]
-- [OPTIONAL] Completed Orders by user (args: user id)[token required]
 
-## Data Shapes
-#### Product
--  id
-- name
-- price
-- [OPTIONAL] category
+| Column         | Type                            | 
+| ---------------|---------------------------------|
+| id             | SERIAL PRIMARY KEY              |
+| status         | VARCHAR                         |
+| user_id        | FOREIGN REFERENCES USERS        |
 
-#### User
-- id
-- firstName
-- lastName
-- password
 
-#### Orders
-- id
-- id of each product in the order
-- quantity of each product in the order
-- user_id
-- status of order (active or complete)
+As many orders can have many products and vice versa,
+here we need a **many2many** table between both tables. 
+
+##### Order_details
+
+| Column        | Type                           |
+|---------------|:-------------------------------|
+| id            | SERIAL PRIMARY KEY             |
+| product_id    | FOREIGN KEY REFERENCES PRODUCTS|
+| quantity      | INTEGER                        |
+| order_id      | FOREIGN KEY REFERENCES ORDERS  |
 

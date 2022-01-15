@@ -137,11 +137,11 @@ describe('User Model Instance', () => {
       expect(result).toBe(null);
     });
     it('Authenticate: returns an authed user', async () => {
-      const authenticatedUser = await userInstance.authenticate('x', 'x');
-      if (authenticatedUser) {
-        expect(authenticatedUser.user_name).toBe('x');
-        expect(authenticatedUser.first_name).toBe('x');
-        expect(authenticatedUser.last_name).toBe('x');
+      const authedUsr = await userInstance.authenticate('x', 'x');
+      if (authedUsr) {
+        expect(authedUsr.user_name).toBe('x');
+        expect(authedUsr.first_name).toBe('x');
+        expect(authedUsr.last_name).toBe('x');
       }
     });
 
