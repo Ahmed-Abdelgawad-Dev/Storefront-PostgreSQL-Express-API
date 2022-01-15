@@ -4,7 +4,7 @@ import client from '../../database';
 import dotenv from 'dotenv';
 import _ from 'lodash';
 import bcrypt from 'bcrypt';
-import {verifyToken} from "../../utils/jwtAuth";
+
 
 dotenv.config();
 const { SALT_ROUNDS, PEPPER } = process.env;

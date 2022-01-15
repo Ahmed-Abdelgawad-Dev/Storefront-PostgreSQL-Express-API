@@ -76,6 +76,9 @@ Clone the repo:  ***git clone*** **https://github.com/Ahmed-Abdelgawad-Dev/Store
 ### install dependencies ###
 `npm install` or `yarn` 
 
+### Apply migrations and migrate to form the database shape. ###
+`npx db-migrate up`  
+
 ### Running the server ###
 
 `yarn start` then the API will work on `127.0.0.1:3000` 

@@ -9,7 +9,7 @@ import { productsRouter } from './controllers/productController';
 import { ordersRouter } from './controllers/orderController';
 import { orderDetailsRouter } from './controllers/orderDetailsController';
 
-const app: express.Application = express();
+export const app: express.Application = express();
 
 // Securing env vars
 dotenv.config();
