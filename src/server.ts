@@ -26,7 +26,7 @@ app.use(helmet());
 app.use(errorMiddleware);
 
 app.get('/', function (_req: Request, res: Response) {
-  res.send(`Main API root Endpoint.`);
+    res.send(`Main API root Endpoint.`);
 });
 
 usersRouter(app);
@@ -35,5 +35,5 @@ ordersRouter(app);
 orderDetailsRouter(app);
 
 app.listen(3000, function () {
-  console.log(`Server is running on:  127.0.0.1:${PORT}`);
+    console.log(`Server is running on:  127.0.0.1:${PORT}`);
 });
