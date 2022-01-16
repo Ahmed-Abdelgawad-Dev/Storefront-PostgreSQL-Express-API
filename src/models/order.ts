@@ -18,8 +18,7 @@ export class OrderModel {
         user_id: orderItem.user_id
       };
     } catch (e) {
-      // @ts-ignore
-      throw new Error(`Failed when creating an order: ${e.message}`);
+      throw new Error(`Failed when creating an order: ${e}`);
     }
   }
   async index(): Promise<Order[]> {

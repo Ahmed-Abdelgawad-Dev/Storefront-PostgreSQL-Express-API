@@ -21,8 +21,7 @@ export const create = async (
     res.json(createToken(usr.user_name));
     next();
   } catch (e) {
-    // @ts-ignore
-    res.status(500).send(`${e.message}`);
+    res.status(500).send(`${e}`);
   }
 };
 
@@ -31,8 +30,7 @@ export const index = async (_req: Request, res: Response) => {
     const users = await userModel.index();
     res.json(users);
   } catch (e) {
-    //@ts-ignore
-    res.status(500).send(`${e.message}`);
+    res.status(500).send(`${e}`);
   }
 };
 
@@ -41,8 +39,7 @@ export const show = async (req: Request, res: Response) => {
     const usr = await userModel.show(parseInt(req.params.id));
     res.json(usr);
   } catch (e) {
-    // @ts-ignore
-    res.status(500).send(`${e.message}`);
+    res.status(500).send(`${e}`);
   }
 };
 
@@ -56,8 +53,7 @@ export const update = async (
     res.json(createToken(usr.user_name));
     next();
   } catch (e) {
-    // @ts-ignore
-    res.status(500).send(`${e.message}`);
+    res.status(500).send(`${e}`);
   }
 };
 
@@ -71,8 +67,7 @@ export const destroy = async (
     res.json(usr);
     next();
   } catch (e) {
-    // @ts-ignore
-    res.status(500).send(`${e.message}`);
+    res.status(500).send(`${e}`);
   }
 };
 
@@ -89,8 +84,7 @@ export const authenticate = async (req: Request, res: Response) => {
       res.send('Please enter a valid user name and password.');
     }
   } catch (e) {
-    // @ts-ignore
-    res.status(500).send(`${e.message}`);
+    res.status(500).send(`${e}`);
   }
 };
 

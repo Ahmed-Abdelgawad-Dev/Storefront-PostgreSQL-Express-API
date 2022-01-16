@@ -5,7 +5,6 @@ import dotenv from 'dotenv';
 import _ from 'lodash';
 import bcrypt from 'bcrypt';
 
-
 dotenv.config();
 const { SALT_ROUNDS, PEPPER } = process.env;
 
@@ -144,7 +143,6 @@ describe('User Model Instance', () => {
         expect(authedUsr.last_name).toBe('x');
       }
     });
-
 
     afterAll(async () => {
       const connection = await client.connect();

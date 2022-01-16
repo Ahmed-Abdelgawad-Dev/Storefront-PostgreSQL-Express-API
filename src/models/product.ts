@@ -13,8 +13,7 @@ export class ProductModel {
       connection.release();
       return newItemProduct;
     } catch (e) {
-      // @ts-ignore
-      throw new Error(`Product ${product.name} can not be add. - ${e.message}`);
+      throw new Error(`Product ${product.name} can not be add. - ${e}`);
     }
   }
 
@@ -25,8 +24,7 @@ export class ProductModel {
       connection.release();
       return result.rows;
     } catch (e) {
-      // @ts-ignore
-      throw new Error(`${e.message}`);
+      throw new Error(`${e}`);
     }
   }
 
@@ -41,8 +39,7 @@ export class ProductModel {
       connection.release();
       return items;
     } catch (e) {
-      // @ts-ignore
-      throw new Error(`${e.message}`);
+      throw new Error(`${e}`);
     }
   }
 
@@ -56,8 +53,7 @@ export class ProductModel {
       connection.release();
       return result.rows[0];
     } catch (e) {
-      // @ts-ignore
-      throw new Error(`${e.message}`);
+      throw new Error(`${e}`);
     }
   }
 
@@ -72,8 +68,7 @@ export class ProductModel {
       connection.release();
       return deletedProduct;
     } catch (e) {
-      // @ts-ignore
-      throw new Error(`Can not delete the item:  ${e.message}`);
+      throw new Error(`Can not delete the item:  ${e}`);
     }
   }
 }

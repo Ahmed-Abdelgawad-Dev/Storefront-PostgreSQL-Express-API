@@ -45,7 +45,6 @@ const update = async (request: Request, response: Response) => {
       category: updatedProd.category
     });
   } catch (e) {
-    // response.status(500).send(`${e}`)
     throw new Error(`Cant update : ${e}`);
   }
 };
@@ -63,7 +62,7 @@ const destroy = async (request: Request, response: Response) => {
 
 export const productsRouter = (app: express.Application): void => {
   app.post('/products/create', verifyToken, create);
-  app.get('/products',  index); // auth removed
+  app.get('/products', index); // auth removed
   app.get('/products/:id', show); //auth removed
   app.patch('/products/update', verifyToken, update);
   app.delete('/products/delete/:id', verifyToken, destroy);
