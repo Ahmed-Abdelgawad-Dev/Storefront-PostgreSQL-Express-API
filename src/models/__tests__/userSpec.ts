@@ -11,7 +11,7 @@ const { SALT_ROUNDS, PEPPER } = process.env;
 
 const userInstance = new UserModel();
 // Dummy user list
-const usrList: User[] = [
+export const usrList: User[] = [
   {
     user_name: 'testuser1',
     first_name: 'testuser1',
@@ -33,7 +33,7 @@ const usrList: User[] = [
 ];
 
 // Adding ids for simplicity.
-const uListWithIdsPasswords = usrList.map((u, i) => {
+export const uListWithIdsPasswords = usrList.map((u, i) => {
   return {
     id: i + 1,
     ..._.pick(u, ['user_name', 'first_name', 'last_name'])
