@@ -17,7 +17,7 @@ dotenv.config();
 const usrModel = new UserModel();
 const request = supertest(app);
 
-const token = createToken(stringify(usrList[0]));
+export const token = createToken(stringify(usrList[0]));
 describe('Testing API USERS ENDPOINTS ', () => {
     describe('Users controller', () => {
         it("'/users/create': creates a user and returns a token", async () => {

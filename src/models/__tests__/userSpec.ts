@@ -28,13 +28,13 @@ export const usrList: User[] = [
         first_name: 'testuser3',
         last_name: 'testuser3',
         password: 'testpwd3'
-    },
+    }
 ];
 
 // Adding ids for simplicity.
 export const uListWithIdsPasswords = usrList.map((u, i) => {
     return {
-        id: i + 1 ,
+        id: i + 1,
         ..._.pick(u, ['user_name', 'first_name', 'last_name'])
     };
 });
