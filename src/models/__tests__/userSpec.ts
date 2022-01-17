@@ -7,8 +7,8 @@ import bcrypt from 'bcrypt';
 
 dotenv.config();
 const { SALT_ROUNDS, PEPPER } = process.env;
-
 const userInstance = new UserModel();
+
 // Dummy user list
 export const usrList: User[] = [
     {

@@ -8,13 +8,13 @@ dotenv.config();
 const productModel = new ProductModel();
 
 // Products dummy list
-const prodList: Product[] = [
+export const prodList: Product[] = [
     { name: 'prod1', price: 100, category: 'category' },
     { name: 'prod2', price: 102, category: 'category2' },
     { name: 'prod3', price: 103, category: 'category3' }
 ];
 
-const listWithId = prodList.map((p, i) => {
+export const listWithId = prodList.map((p, i) => {
     p.id = i + 1;
     return p;
 });
