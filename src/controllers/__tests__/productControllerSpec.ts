@@ -34,10 +34,10 @@ describe('Testing Product EndPoints', function () {
         const response = await request.get('/products/1')
             .set('Authorization', `Bearer ${token}`)
         expect(response.status).toBe(200)
-        // expect(response).toEqual({
-        //     id: 1, name: 'Apple',
-        //     price: 10000, category: 'Smart Phones'
-        // })
+        expect(response.body).toEqual({
+            id: 1, name: 'Apple',
+            price: 10000, category: 'Smart Phones'
+        })
 
 
     });
