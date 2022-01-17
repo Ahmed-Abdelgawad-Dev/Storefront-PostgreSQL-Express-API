@@ -79,7 +79,6 @@ export const authenticate = async (req: Request, res: Response) => {
         );
         if (usr) {
             res.json(createToken(usr.user_name));
-            // res.json(usr.user_name)
         } else {
             res.send('Please enter a valid user name and password.');
         }

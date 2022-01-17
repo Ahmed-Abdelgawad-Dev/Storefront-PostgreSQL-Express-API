@@ -11,7 +11,6 @@ export type Order = {
     status: string;
     user_id: number;
 };
-
 export type OrderDetails = {
     id?: number | undefined;
     product_id: number;

@@ -18,7 +18,7 @@ const usrModel = new UserModel();
 const request = supertest(app);
 
 const token = createToken(stringify(usrList[0]));
-describe('Testing API ENDPOINTS ', () => {
+describe('Testing API USERS ENDPOINTS ', () => {
     describe('Users controller', () => {
         it("'/users/create': creates a user and returns a token", async () => {
             const resp = await request
