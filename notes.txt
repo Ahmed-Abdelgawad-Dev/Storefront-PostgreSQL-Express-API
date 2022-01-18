@@ -5,5 +5,4 @@ create, show, add order
 
 
 Endpoints;
-    order - show, add order
-    product - show , index , create
+    order:  show, add order

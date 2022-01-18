@@ -2,7 +2,6 @@ import { OrderModel } from '../order';
 import dotenv from 'dotenv';
 import client from '../../database';
 import { Order, User } from '../../types';
-import bcrypt from 'bcrypt';
 import { UserModel } from '../user';
 import _ from 'lodash';
 
@@ -33,9 +32,7 @@ describe('Order Model Instance', () => {
             await userInstance.create(usrList[0]);
         });
         it('Order Create', async () => {
-            const createdOrder: Order = await orderModel.createOrder(
-                orderList[0]
-            );
+            const createdOrder: Order = await orderModel.createOrder(orderList[0]);
             expect(createdOrder.id).toBe(1);
             expect(createdOrder.status).toEqual('active');
             expect(createdOrder.user_id).toContain(1);
@@ -79,7 +76,7 @@ describe('Order Model Instance', () => {
     afterAll(async () => {
         const connection = await client.connect();
         await connection.query(
-            'delete from orders;\nALTER sequence orders_id_seq RESTART WITH 1;\n DELETE FROM users;\nALTER SEQUENCE users_id_seq RESTART WITH 1'
+            'delete from orders;\nALTER sequence orders_id_seq RESTART WITH 1;\n DELETE FROM users;\nALTER SEQUENCE users_id_seq RESTART WITH 1;'
         );
         connection.release();
     });

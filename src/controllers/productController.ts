@@ -21,7 +21,6 @@ const create = async (request: Request, response: Response) => {
 const index = async (_request: Request, response: Response) => {
     try {
         const items = await productModel.index();
-        console.log('ITEMS: ------------------------>>>>>>>>>>>>>>>', items);
         response.json(items);
     } catch (e) {
         response.status(500).send(`${e}`);
@@ -31,7 +30,6 @@ const index = async (_request: Request, response: Response) => {
 const show = async (_request: Request, response: Response) => {
     try {
         const items = await productModel.show(parseInt(_request.params.id));
-        console.log('AN ITEM: ------------------------>>>>>>>>>>>>>>>', items);
         response.json(items);
     } catch (e) {
         response.status(500).send(`${e}`);

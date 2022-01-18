@@ -2,7 +2,7 @@ import client from '../database';
 import { OrderDetails } from '../types';
 
 export class OrderDetailsModel {
-    async create(oD: OrderDetails): Promise<OrderDetails> {
+    async create(oD: { quantity: number; product_id: number | undefined; order_id: number | undefined }): Promise<OrderDetails> {
         try {
             const connection = await client.connect();
             const result = await connection.query(
@@ -10,7 +10,7 @@ export class OrderDetailsModel {
                 [oD.product_id, oD.quantity, oD.order_id]
             );
             connection.release();
-            console.log(result.rows[0]);
+            console.log('ORDER DETAILS ITEM =====================>>>>>>>>>>>.----------------------->>>>>>>>>>>>>>>',result.rows[0]);
             return result.rows[0];
         } catch (e) {
             throw new Error(`${e}`);

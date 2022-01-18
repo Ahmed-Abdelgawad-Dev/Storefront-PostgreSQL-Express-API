@@ -3,7 +3,6 @@ import supertest from 'supertest';
 import client from '../../database';
 import { app } from '../../server';
 import {token} from "./userControllerSpec";
-import {stringify} from "querystring";
 
 const request = supertest(app);
 const myProduct: Product = {
@@ -30,7 +29,7 @@ describe('Testing Product EndPoints', function () {
 
 
     });
-    it("/products/:id': Get a specific product=============================>>>>>>>>>>>>>>>>>>>>>>", async () => {
+    it("/products/:id': Get a specific product", async () => {
         const response = await request.get('/products/1')
             .set('Authorization', `Bearer ${token}`)
         expect(response.status).toBe(200)
@@ -38,7 +37,6 @@ describe('Testing Product EndPoints', function () {
             id: 1, name: 'Apple',
             price: 10000, category: 'Smart Phones'
         })
-
 
     });
     it("/products': Get all products", async () => {
