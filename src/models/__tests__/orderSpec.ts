@@ -32,7 +32,9 @@ describe('Order Model Instance', () => {
             await userInstance.create(usrList[0]);
         });
         it('Order Create', async () => {
-            const createdOrder: Order = await orderModel.createOrder(orderList[0]);
+            const createdOrder: Order = await orderModel.createOrder(
+                orderList[0]
+            );
             expect(createdOrder.id).toBe(1);
             expect(createdOrder.status).toEqual('active');
             expect(createdOrder.user_id).toContain(1);

@@ -18,6 +18,7 @@ export const create = async (
     };
     try {
         const usr = await userModel.create(usrDetails);
+        // res.json(createToken(usr.user_name));
         res.json(createToken(usr.user_name));
         next();
     } catch (e) {

@@ -3,7 +3,10 @@ import { Order } from '../types';
 import { formatOrder } from '../utils/formats';
 
 export class OrderModel {
-    async createOrder(ord: { user_id: number | undefined; status: string }): Promise<Order> {
+    async createOrder(ord: {
+        user_id: number | undefined;
+        status: string;
+    }): Promise<Order> {
         try {
             const connection = await client.connect();
             const result = await connection.query(
@@ -11,8 +14,8 @@ export class OrderModel {
                 [ord.status, ord.user_id]
             );
             const orderItem = result.rows[0];
-            console.log('ORDER ITEM--------------------------------->>>>>>>>>>>>>>>>>>>>>>', orderItem)
-            console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+            // console.log('ORDER ITEM--------------------------------->>>>>>>>>>>>>>>>>>>>>>', orderItem)
+            // console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
             connection.release();
             return {
                 id: orderItem.id,

@@ -10,7 +10,7 @@ export class ProductModel {
                 [product.name, product.price, product.category]
             );
             const newItemProduct = result.rows[0];
-              console.log('newItemProduct--------------------------------->>>>>>>>>>>>>>>>>>>>>>', newItemProduct)
+            // console.log('newItemProduct--------------------------------->>>>>>>>>>>>>>>>>>>>>>', newItemProduct)
             connection.release();
             return newItemProduct;
         } catch (e) {

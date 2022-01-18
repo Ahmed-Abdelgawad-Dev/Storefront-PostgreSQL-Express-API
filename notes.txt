@@ -1,8 +1,0 @@
-
-Order Model:
-create, show, add order
-
-
-
-Endpoints;
-    order:  show, add order

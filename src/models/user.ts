@@ -23,8 +23,8 @@ export class UserModel {
                 usr.last_name,
                 encryptedPassword
             ]);
-            console.log('NEW USER ------------------------------------------------>>>>>>>>>>>>>>>',result.rows[0])
-            const { id, user_name, first_name, last_name, password } = result.rows[0];
+            const { id, user_name, first_name, last_name, password } =
+                result.rows[0];
             connection.release();
             return formatUser(id, user_name, first_name, last_name, password);
         } catch (e) {
